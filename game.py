@@ -52,7 +52,6 @@ while RUNNING:
     frameMs = MainClock.tick()
     frameSec = frameMs / 1000
 
-    # move based on bool vars
     #Get amount moved but multiplying speed by time passed (d=vxt)
     if MoveLeft == True:
         position[0] -= MOVE_SPEED * frameSec
@@ -63,8 +62,7 @@ while RUNNING:
     if MoveDown == True:
         position[1] += MOVE_SPEED * frameSec
 
-
-
+   # move based on bool vars
     MoveLeft = False
     MoveRight = False
     MoveUp = False
@@ -72,7 +70,7 @@ while RUNNING:
 
 
     WINDOW.fill(WIN_COLOR)
-    WINDOW.blit(playerImg)
+    WINDOW.blit(playerImg, (250,250))
     pygame.display.flip()
 
 

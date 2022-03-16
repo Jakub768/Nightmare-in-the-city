@@ -63,9 +63,6 @@ while RUNNING:
     if MoveDown == True:
         position[1] += MOVE_SPEED * frameSec
 
-    #Update Rectangle based on position
-    playerImg.left = position[0]
-    playerImg.top = position[1]
 
 
     MoveLeft = False

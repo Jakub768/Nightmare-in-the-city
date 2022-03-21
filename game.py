@@ -2,7 +2,7 @@ import pygame
 import os
 pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
-#this will allow me to work on the directory that I am on as without it 
+# this will allow me to work on the directory that I am on as without it 
 # (for example: everything is on D drive whilst system is on C drive for me), 
 # pygame thinks the directory should be in C drive but I don't work on that drive
 

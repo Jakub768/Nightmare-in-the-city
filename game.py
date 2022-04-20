@@ -10,63 +10,48 @@ MainClock = pygame.time.Clock()
 WIN_COLOR = (255,255,255)
 WINDOW_HEIGHT = 768
 WINDOW_WIDTH = 1024
-WIN_COLOR = (255,255,255)
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
-position = [WINDOW_WIDTH/2, WINDOW_HEIGHT/2]
+
 
 playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
 playerImg.convert()
-playerRect = playerImg.get_rect()
 
-MOVE_SPEED = 500
-MoveLeft = False
-MoveRight = False
-MoveUp = False
-MoveDown = False
+class player(object):
+    def __init__(self,x,y,width,height):
+        self.x = x 
+        self.y = y 
+        self.width = width
+        self.height = height 
+        self.vel = 500
+    
+    def draw(self, WINDOW):
+        WINDOW.blit(playerImg, (self.x,self.y))
 
+def redrawwindow():
+    WINDOW.fill(WIN_COLOR)
+    person.draw(WINDOW)
+
+    pygame.display.update()
+    
+
+person = player(200,410,128,128)
 RUNNING = True
-
 while RUNNING:
-
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_9: #Hardcode exiting game to number 9 
-                RUNNING = False  
-            if event.key == pygame.K_LEFT:
-                MoveLeft = True
-            if event.key == pygame.K_RIGHT:
-                MoveRight = True
-            if event.key == pygame.K_UP:
-                MoveUp = True
-            if event.key == pygame.K_DOWN:
-                MoveDown = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                MoveLeft = False
-            if event.key == pygame.K_RIGHT:
-                MoveRight = False
-            if event.key == pygame.K_UP:
-                MoveUp = False
-            if event.key == pygame.K_DOWN:
-                MoveDown = False
         
     frameMs = MainClock.tick()
     frameSec = frameMs / 1000
 
-    #Get amount moved but multiplying speed by time passed (d=vxt)
-    if MoveLeft == True:
-        position[0] -= MOVE_SPEED * frameSec
-    if MoveRight == True:
-        position[0] += MOVE_SPEED * frameSec
-    if MoveUp == True:
-        position[1] -= MOVE_SPEED * frameSec
-    if MoveDown == True:
-        position[1] += MOVE_SPEED * frameSec
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            RUNNING = False
+    
+    keys = pygame.key.get_pressed()
 
+    if keys[pygame.K_LEFT]:
+        person.x -= person.vel * frameSec
+    elif keys[pygame.K_RIGHT]:
+        person.x += person.vel * frameSec
 
-    WINDOW.fill(WIN_COLOR)
-    WINDOW.blit(playerImg, (position))
-    pygame.display.flip()
-
+    redrawwindow()
 
 pygame.quit()

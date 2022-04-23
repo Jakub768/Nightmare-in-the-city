@@ -5,12 +5,10 @@ pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
 MainClock = pygame.time.Clock()
 
-
 WIN_COLOR = (255,255,255)
 WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
-
 
 playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
 playerImg.convert()
@@ -41,14 +39,20 @@ def redrawwindow():
     WINDOW.fill(WIN_COLOR)
     person.draw(WINDOW)
     building.drawrect(WINDOW)
+    oppositebuilding.drawrect(WINDOW)
+    topbuilding.drawrect(WINDOW)
 
     pygame.display.update()
 
+#Define characters in the game
 person = player(200,410,128,128)
-building = drawbackground(300,600,100,100,(127,127,127))
+
+#Draw shapes
+building = drawbackground(0,400,200,700,(127,127,127))
+oppositebuilding = drawbackground(1720,400,200,700,(127,127,127))
+topbuilding = drawbackground(0,0,1920,100,(127,127,127))
+
 RUNNING = True
-
-
 while RUNNING:
         
     frameMs = MainClock.tick()

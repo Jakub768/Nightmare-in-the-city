@@ -10,9 +10,6 @@ WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
-playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
-playerImg.convert()
-
 class Player(object):
     def __init__(self,x,y,width,height):
         self.x = x 
@@ -21,7 +18,9 @@ class Player(object):
         self.height = height 
         self.vel = 500
     
-    def draw(self, WINDOW):
+    def drawPlayer(self, WINDOW):
+        playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
+        playerImg.convert()
         WINDOW.blit(playerImg, (self.x,self.y))
 
 class DrawBackground(object):
@@ -32,7 +31,7 @@ class DrawBackground(object):
         self.height = height
         self.colour = colour
     
-    def drawrect(self,WINDOW):
+    def drawRect(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
 def drawEverything():

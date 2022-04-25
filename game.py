@@ -10,6 +10,7 @@ WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
+
 class Player(object):
     def __init__(self,x,y,width,height):
         self.x = x 
@@ -31,25 +32,47 @@ class DrawBackground(object):
         self.height = height
         self.colour = colour
     
-    def drawRect(self,WINDOW):
+    def drawRectangle(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
 def drawEverything():
     WINDOW.fill(WIN_COLOR)
-    person.draw(WINDOW)
-    building.drawrect(WINDOW)
-    oppositeBuilding.drawrect(WINDOW)
-    topBuilding.drawrect(WINDOW)
+
+    person.drawPlayer(WINDOW)
+    building.drawRectangle(WINDOW)
+    oppositeBuilding.drawRectangle(WINDOW)
+    topBuilding.drawRectangle(WINDOW)
 
     pygame.display.update()
 
 #Define characters in the game
-person = Player(200,410,128,128)
+person = Player(912,WINDOW_WIDTH/2,128,128)
 
 #Draw shapes
 building = DrawBackground(0,400,200,700,(127,127,127))
 oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
 topBuilding = DrawBackground(0,0,1920,100,(127,127,127))
+
+def movement():
+     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        person.x -= person.vel * frameSec
+     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        person.x += person.vel * frameSec
+     elif keys[pygame.K_UP] or keys[pygame.K_w]:
+        person.y -= person.vel * frameSec
+     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        person.y += person.vel * frameSec
+
+class gameState(object):
+    def __init__(self):
+        self.state = 'main_game'
+    
+    def main_game(self):
+        drawEverything()
+
+    def state_manager(self):
+        pass
+
 
 RUNNING = True
 while RUNNING:
@@ -62,15 +85,8 @@ while RUNNING:
         if keys[pygame.K_ESCAPE]:
             RUNNING = False
 
-    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        person.x -= person.vel * frameSec
-    elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        person.x += person.vel * frameSec
-    elif keys[pygame.K_UP] or keys[pygame.K_w]:
-        person.y -= person.vel * frameSec
-    elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-        person.y += person.vel * frameSec
-
-    drawEverything()
+    game_state = gameState()
+    game_state.main_game()
+    movement()
 
 pygame.quit()

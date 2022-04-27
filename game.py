@@ -16,12 +16,25 @@ class Player(object):
         self.y = y 
         self.width = width
         self.height = height 
-        self.vel = 500
+        self.vel = 400
     
     def drawPlayer(self, WINDOW):
         playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
         playerImg.convert()
         WINDOW.blit(playerImg, (self.x,self.y))
+
+class projectile(object):
+    def __init__(self, bulletx, bullety, radius, colour, velocity, cooldown):
+        self.bulletx = bulletx
+        self.bullety = bullety
+        self.radius = radius
+        self.colour = colour
+        self.velocity = 400
+        self.numOfBullets = []
+    
+    def drawBullet(self,WINDOW):
+        pygame.draw.circle(WINDOW, self.bulletx, self.bullety, self.colour, self.colour)
+    
 
 class DrawBackground(object):
     def __init__(self,x,y,width,height,colour):
@@ -34,8 +47,12 @@ class DrawBackground(object):
     def drawRectangle(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
-def drawMainEnvironment():
+def prepareWindow():
     WINDOW.fill(WIN_COLOR)
+    drawMainStreet()
+    drawMiscellaneous()
+
+def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))
     oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
     topBuilding = DrawBackground(0,0,1920,100,(127,127,127))
@@ -43,25 +60,13 @@ def drawMainEnvironment():
     building.drawRectangle(WINDOW)
     oppositeBuilding.drawRectangle(WINDOW)
     topBuilding.drawRectangle(WINDOW)
-    drawCharacter()
+    drawMiscellaneous()
 
-def drawCharacter():
+def drawMiscellaneous():
     person.drawPlayer(WINDOW)
 
 #Define characters in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
-
-
-def movement():
-     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        person.x -= person.vel * frameSec
-     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        person.x += person.vel * frameSec
-     elif keys[pygame.K_UP] or keys[pygame.K_w]:
-        person.y -= person.vel * frameSec
-     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-        person.y += person.vel * frameSec
-
 
 RUNNING = True
 while RUNNING:
@@ -74,8 +79,16 @@ while RUNNING:
         if keys[pygame.K_ESCAPE]:
             RUNNING = False
 
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        person.x -= person.vel * frameSec
+    elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        person.x += person.vel * frameSec
+    elif keys[pygame.K_UP] or keys[pygame.K_w]:
+        person.y -= person.vel * frameSec
+    elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        person.y += person.vel * frameSec
+
     pygame.display.update()
-    drawEverything()
-    movement()
+    prepareWindow()
 
 pygame.quit()

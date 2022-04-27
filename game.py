@@ -10,7 +10,6 @@ WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
-
 class Player(object):
     def __init__(self,x,y,width,height):
         self.x = x 
@@ -31,27 +30,27 @@ class DrawBackground(object):
         self.width = width
         self.height = height
         self.colour = colour
-    
+
     def drawRectangle(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
-def drawEverything():
+def drawMainEnvironment():
     WINDOW.fill(WIN_COLOR)
+    building = DrawBackground(0,400,200,700,(127,127,127))
+    oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
+    topBuilding = DrawBackground(0,0,1920,100,(127,127,127))
 
-    person.drawPlayer(WINDOW)
     building.drawRectangle(WINDOW)
     oppositeBuilding.drawRectangle(WINDOW)
     topBuilding.drawRectangle(WINDOW)
+    drawCharacter()
 
-    pygame.display.update()
+def drawCharacter():
+    person.drawPlayer(WINDOW)
 
 #Define characters in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
 
-#Draw shapes
-building = DrawBackground(0,400,200,700,(127,127,127))
-oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
-topBuilding = DrawBackground(0,0,1920,100,(127,127,127))
 
 def movement():
      if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -62,16 +61,6 @@ def movement():
         person.y -= person.vel * frameSec
      elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
-
-class gameState(object):
-    def __init__(self):
-        self.state = 'main_game'
-    
-    def main_game(self):
-        drawEverything()
-
-    def state_manager(self):
-        pass
 
 
 RUNNING = True
@@ -85,8 +74,8 @@ while RUNNING:
         if keys[pygame.K_ESCAPE]:
             RUNNING = False
 
-    game_state = gameState()
-    game_state.main_game()
+    pygame.display.update()
+    drawEverything()
     movement()
 
 pygame.quit()

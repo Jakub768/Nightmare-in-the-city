@@ -1,3 +1,4 @@
+from turtle import width
 import pygame
 import os
 pygame.init()
@@ -24,17 +25,18 @@ class Player(object):
         WINDOW.blit(playerImg, (self.x,self.y))
 
 class projectile(object):
-    def __init__(self, bulletx, bullety, radius, colour):
+    def __init__(self, bulletx, bullety, radius, colour, width):
         self.bulletx = bulletx
         self.bullety = bullety
         self.radius = radius
         self.colour = colour
+        self.width = width
         self.velocity = 400
         self.numOfBullets = 5
         self.BulletPosList = []
     
     def drawBullet(self, WINDOW):
-        pygame.draw.circle(WINDOW, self.bulletx, self.bullety, self.colour, self.colour)
+        pygame.draw.circle(WINDOW, self.colour, [self.bulletx, self.bullety], self.radius, self.width)
     
     def shoot(self):
         for i in range(self.numOfBullets):
@@ -93,8 +95,11 @@ while RUNNING:
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
 
-    if keys[pygame.K_SPACE]:
+    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
 
+    if keys[pygame.K_SPACE]:
+        bullet.drawBullet(WINDOW)
+        bullet.shoot()
 
     pygame.display.update()
     prepareGame()

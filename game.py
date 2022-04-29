@@ -24,16 +24,21 @@ class Player(object):
         WINDOW.blit(playerImg, (self.x,self.y))
 
 class projectile(object):
-    def __init__(self, bulletx, bullety, radius, colour, velocity, cooldown):
+    def __init__(self, bulletx, bullety, radius, colour):
         self.bulletx = bulletx
         self.bullety = bullety
         self.radius = radius
         self.colour = colour
         self.velocity = 400
-        self.numOfBullets = []
+        self.numOfBullets = 5
+        self.BulletPosList = []
     
-    def drawBullet(self,WINDOW):
+    def drawBullet(self, WINDOW):
         pygame.draw.circle(WINDOW, self.bulletx, self.bullety, self.colour, self.colour)
+    
+    def shoot(self):
+        for i in range(self.numOfBullets):
+            self.BulletPosList.append([self.bulletx,self.bullety])
     
 
 class DrawBackground(object):
@@ -47,7 +52,7 @@ class DrawBackground(object):
     def drawRectangle(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
-def prepareWindow():
+def prepareGame():
     WINDOW.fill(WIN_COLOR)
     drawMainStreet()
     drawMiscellaneous()
@@ -88,7 +93,10 @@ while RUNNING:
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
 
+    if keys[pygame.K_SPACE]:
+
+
     pygame.display.update()
-    prepareWindow()
+    prepareGame()
 
 pygame.quit()

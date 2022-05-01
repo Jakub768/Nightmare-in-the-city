@@ -32,14 +32,9 @@ class projectile(object):
         self.width = width
         self.velocity = 400
         self.numOfBullets = 5
-        self.BulletPosList = []
-    
+
     def drawBullet(self, WINDOW):
-        pygame.draw.circle(WINDOW, self.colour, [self.bulletx, self.bullety], self.radius, self.width)
-    
-    def shoot(self):
-        for i in range(self.numOfBullets):
-            self.BulletPosList.append([self.bulletx,self.bullety])
+        pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
     
 
 class DrawBackground(object):
@@ -57,6 +52,7 @@ def prepareGame():
     WINDOW.fill(WIN_COLOR)
     drawMainStreet()
     drawMiscellaneous()
+    drawBullet()
 
 def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))
@@ -71,14 +67,23 @@ def drawMainStreet():
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
 
+def drawBullet():
+    for bullet in BulletList:
+        bullet.drawBullet(WINDOW)
+
 #Define characters in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
 
 RUNNING = True
+BulletList = []
 while RUNNING:
-        
+
     frameMs = MainClock.tick()
     frameSec = frameMs / 1000
+
+    for bullet in BulletList:
+        bullet.bullety -= bullet.velocity * frameSec
+
     keys = pygame.key.get_pressed()
 
     for event in pygame.event.get():
@@ -94,11 +99,8 @@ while RUNNING:
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
 
-    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
-
     if keys[pygame.K_SPACE]:
-        bullet.drawBullet(WINDOW)
-        bullet.shoot()
+        BulletList.append(projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6))
 
     pygame.display.update()
     prepareGame()

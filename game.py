@@ -9,6 +9,7 @@ WIN_COLOR = (255,255,255)
 WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
+RUNNING = True
 
 class Player(object):
     def __init__(self,x,y,width,height):
@@ -62,7 +63,7 @@ def drawMainStreet():
     building.drawRectangle(WINDOW)
     oppositeBuilding.drawRectangle(WINDOW)
     topBuilding.drawRectangle(WINDOW)
-    drawMiscellaneous()
+
 
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
@@ -70,19 +71,19 @@ def drawMiscellaneous():
 def drawBullet():
     for bullet in BulletList:
         bullet.drawBullet(WINDOW)
+        bullet.bullety -= bullet.velocity * frameSec
+    
+    #for bullet in BulletList:
+        #bullet.bullety -= bullet.velocity * frameSec
 
-#Define characters in the game
+#Define characters and other properties in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
-
-RUNNING = True
 BulletList = []
+
 while RUNNING:
 
     frameMs = MainClock.tick()
     frameSec = frameMs / 1000
-
-    for bullet in BulletList:
-        bullet.bullety -= bullet.velocity * frameSec
 
     keys = pygame.key.get_pressed()
 

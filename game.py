@@ -72,9 +72,6 @@ def drawBullet():
     for bullet in BulletList:
         bullet.drawBullet(WINDOW)
         bullet.bullety -= bullet.velocity * frameSec
-    
-    #for bullet in BulletList:
-        #bullet.bullety -= bullet.velocity * frameSec
 
 #Define characters and other properties in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)

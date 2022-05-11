@@ -35,7 +35,10 @@ class projectile(object):
         self.numOfBullets = 5
 
     def drawBullet(self, WINDOW):
-        pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
+        self.yellow = pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
+    
+    def shootBullet(self):
+        self.bullety -= self.velocity * frameSec
     
 
 class DrawBackground(object):
@@ -71,11 +74,13 @@ def drawMiscellaneous():
 def drawBullet():
     for bullet in BulletList:
         bullet.drawBullet(WINDOW)
-        bullet.bullety -= bullet.velocity * frameSec
+        bullet.shootBullet()
 
 #Define characters and other properties in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
 BulletList = []
+BULLET_TIME = 0.6
+timeSinceFire = 0
 
 while RUNNING:
 
@@ -97,10 +102,12 @@ while RUNNING:
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
 
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
         BulletList.append(projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6))
+        timeSinceFire = 0
 
-    pygame.display.update()
     prepareGame()
+    timeSinceFire += frameSec
+    pygame.display.update()
 
 pygame.quit()

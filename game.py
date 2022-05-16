@@ -24,6 +24,18 @@ class Player(object):
         playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
         playerImg.convert()
         WINDOW.blit(playerImg, (self.x,self.y))
+    
+class Enemy(object):
+    def __init__(self,x,y,width,height):
+        self.x = x 
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def drawEnemy(self, WINDOW):
+        enemyImg = pygame.image.load('assets/graphics/PNG/Enemy/zombie_idle.png')
+        enemyImg.convert()
+        WINDOW.blit(enemyImg, (self.x,self.y))
 
 class projectile(object):
     def __init__(self, bulletx, bullety, radius, colour, width):

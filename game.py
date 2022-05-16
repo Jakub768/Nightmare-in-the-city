@@ -28,9 +28,6 @@ class Player(object):
         self.playerImg.convert()
         WINDOW.blit(self.playerImg, (self.x,self.y))
     
-    def playerCollision(self):
-        playerRect = pygame.rect(self.x,self.y,self.playerImg.get_width(),self.playerImg.get_height())
-    
 class Enemy(object):
     def __init__(self,x,y,width,height):
         self.x = x 
@@ -42,9 +39,7 @@ class Enemy(object):
     def drawEnemy(self, WINDOW):
         self.enemyImg.convert()
         WINDOW.blit(self.enemyImg, (self.x,self.y))
-    
-    def enemyCollision(self):
-        enemyRect = pygame.rect(self.x,self.y,self.enemyImg.get_width(),self.enemyImg.get_height())
+
 
 class projectile(object):
     def __init__(self, bulletx, bullety, radius, colour, width):
@@ -81,6 +76,21 @@ def prepareGame():
     drawMainStreet()
     drawMiscellaneous()
     Shooting()
+    characterCollisionHandler()
+
+def characterCollisionHandler():
+    playerColl = pygame.rect.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
+    enemyColl = pygame.rect.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
+
+    playerColl.left = person.x
+    enemyColl.top = person.y
+
+    enemyRect = enemyColl
+    enemyRect.left = zombie.x
+    enemyRect.top = zombie.y
+
+    if pygame.Rect.colliderect(playerColl,enemyRect):
+        print("Hoi")
 
 def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))

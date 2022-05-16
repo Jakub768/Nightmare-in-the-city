@@ -1,4 +1,4 @@
-# NPA project repository
+# Nightmare in the city 
 
 A very simple game made for school with first-time using OOP (hence, please do not judge me, I am still learning :p)
 

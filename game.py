@@ -85,11 +85,10 @@ def characterCollisionHandler():
     playerColl.left = person.x
     enemyColl.top = person.y
 
-    enemyRect = enemyColl
-    enemyRect.left = zombie.x
-    enemyRect.top = zombie.y
+    enemyColl.left = zombie.x
+    enemyColl.top = zombie.y
 
-    if pygame.Rect.colliderect(playerColl,enemyRect):
+    if pygame.Rect.colliderect(playerColl,enemyColl):
         print("Hoi")
 
 def drawMainStreet():

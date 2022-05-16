@@ -22,11 +22,14 @@ class Player(object):
         self.width = width
         self.height = height 
         self.vel = 400
+        self.playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
     
     def drawPlayer(self, WINDOW):
-        playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
-        playerImg.convert()
-        WINDOW.blit(playerImg, (self.x,self.y))
+        self.playerImg.convert()
+        WINDOW.blit(self.playerImg, (self.x,self.y))
+    
+    def playerCollision(self):
+        playerRect = pygame.rect(self.x,self.y,self.playerImg.get_width(),self.playerImg.get_height())
     
 class Enemy(object):
     def __init__(self,x,y,width,height):
@@ -34,11 +37,14 @@ class Enemy(object):
         self.y = y
         self.width = width
         self.height = height
+        self.enemyImg = pygame.image.load('assets/graphics/PNG/Enemy/zombie_idle.png')
 
     def drawEnemy(self, WINDOW):
-        enemyImg = pygame.image.load('assets/graphics/PNG/Enemy/zombie_idle.png')
-        enemyImg.convert()
-        WINDOW.blit(enemyImg, (self.x,self.y))
+        self.enemyImg.convert()
+        WINDOW.blit(self.enemyImg, (self.x,self.y))
+    
+    def enemyCollision(self):
+        enemyRect = pygame.rect(self.x,self.y,self.enemyImg.get_width(),self.enemyImg.get_height())
 
 class projectile(object):
     def __init__(self, bulletx, bullety, radius, colour, width):
@@ -96,6 +102,7 @@ def Shooting():
         bullet.shootBullet()
 
 #Define characters and other properties in the game
+
 person = Player(912,WINDOW_WIDTH/2,128,128)
 zombie = Enemy(800,WINDOW_HEIGHT/2,128,128)
 bulletList = []
@@ -103,6 +110,7 @@ BULLET_TIME = 0.6
 timeSinceFire = 0
 
 #Main Game loop
+
 while RUNNING:
 
     frameMs = MainClock.tick()
@@ -126,9 +134,10 @@ while RUNNING:
     if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
         bulletList.append(projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6))
         timeSinceFire = 0
+    
+    timeSinceFire += frameSec
 
     prepareGame()
-    timeSinceFire += frameSec
     pygame.display.update()
 
 pygame.quit()

@@ -83,6 +83,7 @@ def drawMainStreet():
 
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
+    zombie.drawEnemy(WINDOW)
 
 def Shooting():
     for bullet in bulletList:
@@ -91,12 +92,10 @@ def Shooting():
 
 #Define characters and other properties in the game
 person = Player(912,WINDOW_WIDTH/2,128,128)
+zombie = Enemy(800,WINDOW_HEIGHT/2,128,128)
 bulletList = []
 BULLET_TIME = 0.6
 timeSinceFire = 0
-
-pygame.mixer.music.load("Audio/No.mp3")
-pygame.mixer.music.play(0)
 
 while RUNNING:
 

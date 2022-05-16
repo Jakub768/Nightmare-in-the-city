@@ -3,6 +3,7 @@ import os
 pygame.init()
 pygame.mixer.init()
 
+#system based and windows based variable initialisations
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
 MainClock = pygame.time.Clock()
 
@@ -11,6 +12,8 @@ WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 RUNNING = True
+
+#Classes to define main content such as characters or the map
 
 class Player(object):
     def __init__(self,x,y,width,height):
@@ -65,6 +68,8 @@ class DrawBackground(object):
     def drawRectangle(self,WINDOW):
         pygame.draw.rect(WINDOW, self.colour, pygame.Rect(self.x, self.y, self.width, self.height))
 
+#Functions for different events in the game and readability
+
 def prepareGame():
     WINDOW.fill(WIN_COLOR)
     drawMainStreet()
@@ -97,6 +102,7 @@ bulletList = []
 BULLET_TIME = 0.6
 timeSinceFire = 0
 
+#Main Game loop
 while RUNNING:
 
     frameMs = MainClock.tick()

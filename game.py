@@ -1,4 +1,4 @@
-import pygame
+import pygame, pygame.freetype
 import os
 pygame.init()
 pygame.mixer.init()
@@ -77,6 +77,7 @@ def prepareGame():
     drawMiscellaneous()
     Shooting()
     characterCollisionHandler()
+    textHandler()
 
 def characterCollisionHandler():
     playerColl = pygame.rect.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
@@ -100,6 +101,8 @@ def drawMainStreet():
     oppositeBuilding.drawRectangle(WINDOW)
     topBuilding.drawRectangle(WINDOW)
 
+def textHandler():
+    UIFont.render_to(WINDOW, (10,10), "Score: "+str(score), (0, 0, 0),size=80)
 
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
@@ -111,12 +114,23 @@ def Shooting():
         bullet.shootBullet()
 
 #Define characters and other properties in the game
-
+#character variable init
 person = Player(912,WINDOW_WIDTH/2,128,128)
 zombie = Enemy(800,WINDOW_HEIGHT/2,128,128)
+playerAlive = True
+
+#Bullet variable init
 bulletList = []
 BULLET_TIME = 0.6
 timeSinceFire = 0
+
+#Win/Loss state variable init
+score = 0
+winState = False
+LossState = False
+
+#Text
+UIFont = pygame.freetype.Font("Assets/Fonts/KenneyHighSquare.ttf",24)
 
 #Main Game loop
 

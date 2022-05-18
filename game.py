@@ -80,6 +80,7 @@ def prepareGame():
 def CollisionHandler():
     playerColl = pygame.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
     enemyColl = pygame.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
+    winningRectColl = pygame.Rect(winningRectangle.x,winningRectangle.y,winningRectangle.width,winningRectangle.height)
 
     winState = False
     LossState = False
@@ -88,16 +89,22 @@ def CollisionHandler():
         LossState = True
         winState = False
         winOrLossState(LossState, winState)
+    elif pygame.Rect.colliderect(playerColl,winningRectColl):
+        LossState = False
+        winState = True
+        winOrLossState(LossState, winState)
 
 def winOrLossState(LossState, winState):
     if winState: 
         textRect = UIFont.get_rect("YOU WIN!")
-        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "YOU WIN!", GRAY)
+        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "YOU WIN!", GRAY, size=100)
     elif LossState: 
         textRect = UIFont.get_rect("GAME OVER!")
         UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "GAME OVER!", GRAY, size=100)
 
 def drawMainStreet():
+    global winningRectangle
+
     building = DrawBackground(0,400,200,700,(127,127,127))
     oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
     topBuilding = DrawBackground(0,0,1920,100,(127,127,127))

@@ -50,14 +50,12 @@ class projectile(object):
         self.colour = colour
         self.width = width
         self.velocity = 400
-        self.numOfBullets = 5
 
     def drawBullet(self, WINDOW):
-        self.yellow = pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
+        self.circleBullet = pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
     
     def shootBullet(self):
         self.bullety -= self.velocity * frameSec
-    
 
 class DrawBackground(object):
     def __init__(self,x,y,width,height,colour):
@@ -81,15 +79,8 @@ def prepareGame():
     textHandler()
 
 def CollisionHandler():
-    playerColl = pygame.rect.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
-    enemyColl = pygame.rect.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
-    #bulletColl = pygame.rect.Rect(bullet.x,)
-
-    playerColl.left = person.x
-    enemyColl.top = person.y
-
-    enemyColl.left = zombie.x
-    enemyColl.top = zombie.y
+    playerColl = pygame.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
+    enemyColl = pygame.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
 
     if pygame.Rect.colliderect(playerColl,enemyColl):
         LossState = True
@@ -100,6 +91,7 @@ def CollisionHandler():
         winState = True
         winOrLossState(LossState, winState)
 
+
 def winOrLossState(LossState, winState):
     if winState: 
         textRect = UIFont.get_rect("YOU WIN!")
@@ -107,7 +99,6 @@ def winOrLossState(LossState, winState):
     elif LossState: 
         textRect = UIFont.get_rect("GAME OVER!")
         UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "GAME OVER!", GRAY, size=100)
-
 
 def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))
@@ -124,10 +115,6 @@ def textHandler():
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
     zombie.drawEnemy(WINDOW)
-
-def drawBullet():
-    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
-    bulletList.append(bullet)
 
 def Shooting():
     for bullet in bulletList:
@@ -176,9 +163,11 @@ while RUNNING:
         person.y -= person.vel * frameSec
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
+    
+    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
 
     if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
-        drawBullet()
+        bulletList.append(bullet)
         timeSinceFire = 0
     
     timeSinceFire += frameSec

@@ -77,12 +77,13 @@ def prepareGame():
     drawMainStreet()
     drawMiscellaneous()
     Shooting()
-    characterCollisionHandler()
+    CollisionHandler()
     textHandler()
 
-def characterCollisionHandler():
+def CollisionHandler():
     playerColl = pygame.rect.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
     enemyColl = pygame.rect.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
+    #bulletColl = pygame.rect.Rect(bullet.x,)
 
     playerColl.left = person.x
     enemyColl.top = person.y
@@ -92,16 +93,20 @@ def characterCollisionHandler():
 
     if pygame.Rect.colliderect(playerColl,enemyColl):
         LossState = True
-        winOrLossState(LossState)
+        winState = False
+        winOrLossState(LossState, winState)
+    elif score >= scoreToWin:
+        LossState = False
+        winState = True
+        winOrLossState(LossState, winState)
 
-def winOrLossState(LossState):
+def winOrLossState(LossState, winState):
     if winState: 
         textRect = UIFont.get_rect("YOU WIN!")
-        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2 - textRect.width/2, WINDOW_HEIGHT/2 - textRect.height/2), "YOU WIN!", GRAY)
-
+        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "YOU WIN!", GRAY)
     elif LossState: 
         textRect = UIFont.get_rect("GAME OVER!")
-        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2 - textRect.width/2, WINDOW_HEIGHT/2 - textRect.height/2), "GAME OVER!", GRAY, Size=100)
+        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2.5 - textRect.width/2.5, WINDOW_HEIGHT/2.5 - textRect.height/2.5), "GAME OVER!", GRAY, size=100)
 
 
 def drawMainStreet():
@@ -119,6 +124,10 @@ def textHandler():
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
     zombie.drawEnemy(WINDOW)
+
+def drawBullet():
+    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
+    bulletList.append(bullet)
 
 def Shooting():
     for bullet in bulletList:
@@ -169,7 +178,7 @@ while RUNNING:
         person.y += person.vel * frameSec
 
     if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
-        bulletList.append(projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6))
+        drawBullet()
         timeSinceFire = 0
     
     timeSinceFire += frameSec

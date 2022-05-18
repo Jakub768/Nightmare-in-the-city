@@ -52,7 +52,7 @@ class projectile(object):
         self.velocity = 400
 
     def drawBullet(self, WINDOW):
-        self.circleBullet = pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
+        pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
     
     def shootBullet(self):
         self.bullety -= self.velocity * frameSec
@@ -76,21 +76,31 @@ def prepareGame():
     drawMiscellaneous()
     Shooting()
     CollisionHandler()
-    textHandler()
 
 def CollisionHandler():
     playerColl = pygame.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
     enemyColl = pygame.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
+    bulletColl = pygame.Rect(bullet.bulletx,bullet.bullety,0,0)
 
-    if pygame.Rect.colliderect(playerColl,enemyColl):
+    #Win/Loss state variable init
+    score = 0
+    scorePerEnemy = 100
+    scoreToWin = 100
+    winState = False
+    LossState = False
+
+    UIFont.render_to(WINDOW, (10,10), "Score: "+str(score), (0, 0, 0),size=80)
+
+    if pygame.Rect.colliderect(bulletColl,enemyColl):
+        score = score + scorePerEnemy
+        if score >= scoreToWin:
+            LossState = False
+            winState = True
+            winOrLossState(LossState, winState)
+    elif pygame.Rect.colliderect(playerColl,enemyColl):
         LossState = True
         winState = False
         winOrLossState(LossState, winState)
-    elif score >= scoreToWin:
-        LossState = False
-        winState = True
-        winOrLossState(LossState, winState)
-
 
 def winOrLossState(LossState, winState):
     if winState: 
@@ -107,10 +117,7 @@ def drawMainStreet():
 
     building.drawRectangle(WINDOW)
     oppositeBuilding.drawRectangle(WINDOW)
-    topBuilding.drawRectangle(WINDOW)
-
-def textHandler():
-    UIFont.render_to(WINDOW, (10,10), "Score: "+str(score), (0, 0, 0),size=80)
+    topBuilding.drawRectangle(WINDOW)   
 
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)
@@ -130,14 +137,9 @@ playerAlive = True
 
 #Bullet variable init
 bulletList = []
+bulletActive = False
 BULLET_TIME = 0.6
 timeSinceFire = 0
-
-#Win/Loss state variable init
-score = 0
-scoreToWin = 100
-winState = False
-LossState = False
 
 #Text
 UIFont = pygame.freetype.Font("Assets/Fonts/KenneyHighSquare.ttf",24)
@@ -164,9 +166,11 @@ while RUNNING:
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
     
-    bullet = projectile(person.x+person.width//3,person.y+person.height//2,7,(255,255,0),6)
+    bullet = projectile(0,0,7,(255,255,0),6)
 
     if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
+        bullet.bulletx = person.x+person.width//3
+        bullet.bullety = person.y+person.height//2
         bulletList.append(bullet)
         timeSinceFire = 0
     

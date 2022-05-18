@@ -12,6 +12,7 @@ WINDOW_HEIGHT = 1080
 WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 RUNNING = True
+GRAY = (127,127,127)
 
 #Classes to define main content such as characters or the map
 
@@ -90,7 +91,18 @@ def characterCollisionHandler():
     enemyColl.top = zombie.y
 
     if pygame.Rect.colliderect(playerColl,enemyColl):
-        print("Hoi")
+        LossState = True
+        winOrLossState(LossState)
+
+def winOrLossState(LossState):
+    if winState: 
+        textRect = UIFont.get_rect("YOU WIN!")
+        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2 - textRect.width/2, WINDOW_HEIGHT/2 - textRect.height/2), "YOU WIN!", GRAY)
+
+    elif LossState: 
+        textRect = UIFont.get_rect("GAME OVER!")
+        UIFont.render_to(WINDOW, (WINDOW_WIDTH/2 - textRect.width/2, WINDOW_HEIGHT/2 - textRect.height/2), "GAME OVER!", GRAY, Size=100)
+
 
 def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))
@@ -114,6 +126,7 @@ def Shooting():
         bullet.shootBullet()
 
 #Define characters and other properties in the game
+
 #character variable init
 person = Player(912,WINDOW_WIDTH/2,128,128)
 zombie = Enemy(800,WINDOW_HEIGHT/2,128,128)
@@ -126,13 +139,14 @@ timeSinceFire = 0
 
 #Win/Loss state variable init
 score = 0
+scoreToWin = 100
 winState = False
 LossState = False
 
 #Text
 UIFont = pygame.freetype.Font("Assets/Fonts/KenneyHighSquare.ttf",24)
 
-#Main Game loop
+#Main Game loop - stuff that will happen every game frame time
 
 while RUNNING:
 

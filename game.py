@@ -80,24 +80,11 @@ def prepareGame():
 def CollisionHandler():
     playerColl = pygame.Rect(person.x,person.y,person.playerImg.get_width(),person.playerImg.get_height()) 
     enemyColl = pygame.Rect(zombie.x,zombie.y,zombie.enemyImg.get_width(),zombie.enemyImg.get_height())
-    bulletColl = pygame.Rect(bullet.bulletx,bullet.bullety,0,0)
 
-    #Win/Loss state variable init
-    score = 0
-    scorePerEnemy = 100
-    scoreToWin = 100
     winState = False
     LossState = False
 
-    UIFont.render_to(WINDOW, (10,10), "Score: "+str(score), (0, 0, 0),size=80)
-
-    if pygame.Rect.colliderect(bulletColl,enemyColl):
-        score = score + scorePerEnemy
-        if score >= scoreToWin:
-            LossState = False
-            winState = True
-            winOrLossState(LossState, winState)
-    elif pygame.Rect.colliderect(playerColl,enemyColl):
+    if pygame.Rect.colliderect(playerColl,enemyColl):
         LossState = True
         winState = False
         winOrLossState(LossState, winState)
@@ -114,10 +101,12 @@ def drawMainStreet():
     building = DrawBackground(0,400,200,700,(127,127,127))
     oppositeBuilding = DrawBackground(1720,400,200,700,(127,127,127))
     topBuilding = DrawBackground(0,0,1920,100,(127,127,127))
+    winningRectangle = DrawBackground(910,100,200,100,(0,255,0))
 
     building.drawRectangle(WINDOW)
     oppositeBuilding.drawRectangle(WINDOW)
-    topBuilding.drawRectangle(WINDOW)   
+    topBuilding.drawRectangle(WINDOW)  
+    winningRectangle.drawRectangle(WINDOW)
 
 def drawMiscellaneous():
     person.drawPlayer(WINDOW)

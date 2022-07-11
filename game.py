@@ -1,5 +1,8 @@
 import pygame, pygame.freetype
-import os
+from Player import Player
+from Enemy import Enemy
+from Projectiles import projectile
+
 pygame.init()
 pygame.mixer.init()
 
@@ -14,32 +17,6 @@ RUNNING = True
 GRAY = (127,127,127)
 
 #Classes to define main content such as characters or the map
-
-class Player(object):
-    def __init__(self,x,y,width,height):
-        self.x = x 
-        self.y = y 
-        self.width = width
-        self.height = height 
-        self.vel = 400
-        self.playerImg = pygame.image.load('assets/graphics/PNG/Player/Poses/Player_idle.png')
-    
-    def drawPlayer(self, WINDOW):
-        self.playerImg.convert()
-        WINDOW.blit(self.playerImg, (self.x,self.y))
-    
-class Enemy(object):
-    def __init__(self,x,y,width,height):
-        self.x = x 
-        self.y = y
-        self.width = width
-        self.height = height
-        self.enemyImg = pygame.image.load('assets/graphics/PNG/Enemy/zombie_idle.png')
-
-    def drawEnemy(self, WINDOW):
-        self.enemyImg.convert()
-        WINDOW.blit(self.enemyImg, (self.x,self.y))
-
 
 class projectile(object):
     def __init__(self, bulletx, bullety, radius, colour, width):

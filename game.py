@@ -4,7 +4,6 @@ pygame.init()
 pygame.mixer.init()
 
 #system based and windows based variable initialisations
-os.chdir(os.path.dirname(os.path.abspath(__file__))) 
 MainClock = pygame.time.Clock()
 
 WIN_COLOR = (255,255,255)

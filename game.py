@@ -1,7 +1,6 @@
 import pygame, pygame.freetype
 from Player import Player
 from Enemy import Enemy
-from Projectiles import projectile
 
 pygame.init()
 pygame.mixer.init()
@@ -15,23 +14,6 @@ WINDOW_WIDTH = 1920
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 RUNNING = True
 GRAY = (127,127,127)
-
-#Classes to define main content such as characters or the map
-
-class projectile(object):
-    def __init__(self, bulletx, bullety, radius, colour, width):
-        self.bulletx = bulletx
-        self.bullety = bullety
-        self.radius = radius
-        self.colour = colour
-        self.width = width
-        self.velocity = 400
-
-    def drawBullet(self, WINDOW):
-        pygame.draw.circle(WINDOW, self.colour, (self.bulletx, self.bullety), self.radius, self.width)
-    
-    def shootBullet(self):
-        self.bullety -= self.velocity * frameSec
 
 class DrawBackground(object):
     def __init__(self,x,y,width,height,colour):
@@ -130,16 +112,6 @@ while RUNNING:
         person.y -= person.vel * frameSec
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         person.y += person.vel * frameSec
-    
-    bullet = projectile(0,0,7,(255,255,0),6)
-
-    if keys[pygame.K_SPACE] and timeSinceFire >= BULLET_TIME:
-        bullet.bulletx = person.x+person.width//3
-        bullet.bullety = person.y+person.height//2
-        bulletList.append(bullet)
-        timeSinceFire = 0
-    
-    timeSinceFire += frameSec
 
     prepareGame()
     pygame.display.update()
